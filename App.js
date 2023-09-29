@@ -3,19 +3,29 @@ import { Text, SafeAreaView, View } from 'react-native';
 
 import { styles } from './src/css/styles.js';
 
-import { InputUniversidade } from './components/InputUniversidade';
-import { InputPais } from './components/InputPais';
+import { ButtonsContainer } from './components/ButtonsContainer';
+import { InputsContainer } from './components/InputsContainer.js';
+import { ListaUniversidades } from './components/ListaUniversidades.js';
 
 export default function App() {
+
+  const button_search_clicked = () => {
+    console.log("Button search clicked");
+  }
+
+  const button_favories_clicked = () => {
+    console.log("Button favorites clicked");
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
       <View style = {styles.top_section}>
-      <InputPais />
-      <InputUniversidade />
+        <InputsContainer />
+        <ButtonsContainer button_search_clicked = {button_search_clicked} button_favories_clicked = {button_favories_clicked} />
       </View>
       <View style = {styles.bottom_section}>
-        <Text>Resultado</Text>
+        <ListaUniversidades />
       </View>
     </SafeAreaView>
   );
