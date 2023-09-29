@@ -5,7 +5,7 @@ import { styles } from '../src/css/styles.js';
 
 
 
-export const CardUniversidade = (props) => {
+export const CardUniversity = (props) => {
   return(
     <View style = {styles.card}>
       <Text style = {styles.texto_card_universidade}>{props.nome}</Text>
@@ -13,4 +13,4 @@ export const CardUniversidade = (props) => {
   )
 }
 
-export default CardUniversidade;
+export default CardUniversity;

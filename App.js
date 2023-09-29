@@ -5,7 +5,7 @@ import { styles } from './src/css/styles.js';
 
 import { ButtonsContainer } from './components/ButtonsContainer';
 import { InputsContainer } from './components/InputsContainer.js';
-import { ListaUniversidades } from './components/ListaUniversidades.js';
+import { ListUniversities } from './components/ListUniversities.js';
 
 export default function App() {
 
@@ -25,7 +25,7 @@ export default function App() {
         <ButtonsContainer button_search_clicked = {button_search_clicked} button_favories_clicked = {button_favories_clicked} />
       </View>
       <View style = {styles.bottom_section}>
-        <ListaUniversidades />
+        <ListUniversities />
       </View>
     </SafeAreaView>
   );

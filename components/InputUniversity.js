@@ -3,13 +3,13 @@ import {View, TextInput} from 'react-native';
 
 import { styles } from '../src/css/styles.js';
 
-export const InputPais = () => {
+export const InputUniversity = () => {
   return (
     <View>
-      <TextInput style={styles.input} placeholder="Nome do País"/>
+      <TextInput style={styles.input} placeholder="Nome da Universidade"/>
     </View>
   )
 
 }
 
-export default InputPais;
+export default InputUniversity;
