@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
 
-  container: {
+  main: {
     flex: 1,
     backgroundColor: '#f3f6f4',
     padding: 20,
@@ -43,11 +43,11 @@ const styles = StyleSheet.create({
     margin: 20,
   },
 
-  lista_container: {
+  list_container: {
     flex: 1,
   },
 
-  lista: {
+  list: {
     display: 'flex',
     flexDirection: 'column',
   },
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
 
-  texto_card_universidade: {
+  university_card_text: {
     fontSize: 15,
   }
 });

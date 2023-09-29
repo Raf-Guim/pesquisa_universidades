@@ -11,8 +11,8 @@ DATA = [{id: 0, nome: 'USP'}, {id: 1, nome: 'UNICAMP'}, {id: 2, nome: 'UNESP'}];
 
 export const ListUniversities = () => {
   return(
-    <View style = {styles.lista_container}>
-      <FlatList style = {styles.lista}
+    <View style = {styles.list_container}>
+      <FlatList style = {styles.list}
         data={DATA}
         renderItem={({item}) => <CardUniversity nome = {item.nome} />}
         keyExtractor={item => item.id}

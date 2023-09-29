@@ -18,7 +18,7 @@ export default function App() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.main}>
       <StatusBar style="auto" />
       <View style = {styles.top_section}>
         <InputsContainer />
