@@ -5,17 +5,14 @@ import { styles } from '../src/css/styles.js';
 
 import { CardUniversity } from './CardUniversity.js';
 
-DATA = [{id: 0, nome: 'USP'}, {id: 1, nome: 'UNICAMP'}, {id: 2, nome: 'UNESP'}];
 
-
-
-export const ListUniversities = () => {
+export const ListUniversities = (props) => {
   return(
     <View style = {styles.list_container}>
       <FlatList style = {styles.list}
-        data={DATA}
-        renderItem={({item}) => <CardUniversity nome = {item.nome} />}
-        keyExtractor={item => item.id}
+        data={props.search_list}
+        renderItem={({item, index}) => <CardUniversity name = {item.name} />}
+        // keyExtractor={idx => idx}
       />
     </View>
   )
