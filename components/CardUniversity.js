@@ -1,15 +1,20 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {Text, Pressable} from 'react-native';
 
 import { styles } from '../src/css/styles.js';
 
 
 
 export const CardUniversity = (props) => {
+
+  const onPressHandler = () => {
+    console.log(props.name);
+  }
+
   return(
-    <View style = {styles.card}>
+    <Pressable style = {styles.card} onPress={onPressHandler}>
       <Text style = {styles.university_card_text}>{props.name}</Text>
-    </View>
+    </Pressable>
   )
 }
 

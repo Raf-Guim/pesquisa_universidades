@@ -19,7 +19,7 @@ export const MainScreen = () => {
     update_modal_text(text);
   }
 
-  const [url_search, update_url_search] = useState('');
+  const [url_search, update_url_search] = useState('http://universities.hipolabs.com/search?name=${university}&country=${country}');
   const update_url_search_handler = (text) => {
     update_url_search(text);
   }
