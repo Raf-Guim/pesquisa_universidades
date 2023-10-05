@@ -7,6 +7,7 @@ import { InputsContainer } from './InputsContainer.js';
 import { ListUniversities } from './ListUniversities.js';
 import { AlertModal } from './AlertModal.js';
 import { useState } from 'react';
+import { fetch_universities, insert_university } from '../db/BancoDados.js';
 
 import axios from 'axios';
 
@@ -49,8 +50,6 @@ export const MainScreen = () => {
       update_url_search_handler(`http://universities.hipolabs.com/search?name=${university}&country=${country}`);
     }
 
-    // const response = await axios.get(url_search);
-    // update_search_list_handler(response.data)
     await axios.get(url_search)
       .then(response => {
         update_search_list_handler(response.data)
@@ -77,6 +76,11 @@ export const MainScreen = () => {
 
   const button_favories_clicked = () => {
     console.log("Button favorites clicked");
+    console.log(fetch_universities().then((res) => console.log(res)).catch((err) => console.log(err)));
+  };
+
+  const university_clicked = (university) => {
+    insert_university(university.name, university.web_pages[0]).then((res) => console.log(`Universidade ${university.name} inserida no db!`)).catch((err) => console.log(err));
   };
 
   return (
@@ -87,7 +91,7 @@ export const MainScreen = () => {
         <ButtonsContainer button_search_clicked = {button_search_clicked} button_favories_clicked = {button_favories_clicked} />
       </View>
       <View style = {styles.bottom_section}>
-        <ListUniversities search_list = {search_list} />
+        <ListUniversities search_list = {search_list} university_clicked = {university_clicked} />
       </View>
     </SafeAreaView>
   )
