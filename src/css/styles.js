@@ -8,6 +8,12 @@ const styles = StyleSheet.create({
     padding: 20,
   },
 
+  favorites: {
+    flex: 1,
+    backgroundColor: '#f3f6f4',
+    padding: 20,
+  },
+
   top_section: {
     flex: 1,
     display: 'flex',

@@ -1,4 +1,4 @@
-import {Modal, SafeAreaView, View, Text, Button } from 'react-native';
+import {SafeAreaView, View} from 'react-native';
 
 import { styles } from '../src/css/styles.js';
 
@@ -11,7 +11,7 @@ import { fetch_universities, insert_university } from '../db/BancoDados.js';
 
 import axios from 'axios';
 
-export const MainScreen = () => {
+export const MainScreen = ({ navigation }) => {
 
   const [exibirModal, setExibirModal] = useState(false);
 
@@ -23,6 +23,11 @@ export const MainScreen = () => {
   const [url_search, update_url_search] = useState('http://universities.hipolabs.com/search?name=${university}&country=${country}');
   const update_url_search_handler = (text) => {
     update_url_search(text);
+  }
+
+  const [db_list, update_db_list] = useState([]);
+  const update_db_list_handler = (list) => {
+    update_db_list(list);
   }
 
   const [search_list, update_search_list] = useState([]);
@@ -76,11 +81,18 @@ export const MainScreen = () => {
 
   const button_favories_clicked = () => {
     console.log("Button favorites clicked");
-    console.log(fetch_universities().then((res) => console.log(res)).catch((err) => console.log(err)));
+
+    fetch_universities()
+    .then((res) => {
+      update_db_list_handler(res);
+    })
+    .catch((err) => console.log(err));
+
+    navigation.navigate('Favoritos', db_list);
   };
 
   const university_clicked = (university) => {
-    insert_university(university.name, university.web_pages[0]).then((res) => console.log(`Universidade ${university.name} inserida no db!`)).catch((err) => console.log(err));
+    insert_university(university.name, university.web_pages[0]).then().catch((err) => console.log(err));
   };
 
   return (
