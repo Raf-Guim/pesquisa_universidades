@@ -20,10 +20,10 @@ export const MainScreen = ({ navigation }) => {
     update_modal_text(text);
   }
 
-  const [url_search, update_url_search] = useState('http://universities.hipolabs.com/search?name=${university}&country=${country}');
-  const update_url_search_handler = (text) => {
-    update_url_search(text);
-  }
+  const [url_search, update_url_search] = useState('');
+  // const update_url_search_handler = (text) => {
+  //   update_url_search(text);
+  // }
 
   const [db_list, update_db_list] = useState([]);
   const update_db_list_handler = (list) => {
@@ -46,25 +46,35 @@ export const MainScreen = ({ navigation }) => {
 
   const getUniversities = async () => {
     if (country === '') {
-      update_url_search_handler(`http://universities.hipolabs.com/search?name=${university}`);
+      console.log('ENTREI NO COUNTRY');
+      update_url_search(`http://universities.hipolabs.com/search?name=${university}`);
     }
     else if (university === '') {
-      update_url_search_handler(`http://universities.hipolabs.com/search?country=${country}`);
+      console.log('ENTREI NO UNIVERSITY');
+      update_url_search(`http://universities.hipolabs.com/search?country=${country}`);
     }
     else {
-      update_url_search_handler(`http://universities.hipolabs.com/search?name=${university}&country=${country}`);
+      console.log('ENTREI NO TANTO FAZ');
+      update_url_search(`http://universities.hipolabs.com/search?name=${university}&country=${country}`);
     }
 
-    await axios.get(url_search)
+    response = await axios.get(url_search)
       .then(response => {
-        update_search_list_handler(response.data)
+        console.log(response);
+        return response.data;
       })
       .catch(error => { 
         console.log(error);
         update_modal_text_handler("Erro ao buscar lista de universidades");
         setExibirModal(!exibirModal);
       });
+    update_search_list_handler(response);
+    console.log(search_list);
   };
+
+  // const fetch_data = async () => {
+  //   const response = await axios.get(url_search);
+  // };
 
   const button_search_clicked  = () => {
     console.log("Button search clicked");
@@ -79,16 +89,16 @@ export const MainScreen = ({ navigation }) => {
     }
   };
 
-  const button_favories_clicked = () => {
+  const button_favories_clicked = async () => {
     console.log("Button favorites clicked");
-
-    fetch_universities()
+    update_search_list_handler([]);
+    await fetch_universities()
     .then((res) => {
       update_db_list_handler(res);
     })
     .catch((err) => console.log(err));
 
-    navigation.navigate('Favoritos', db_list);
+    await navigation.navigate('Favoritos', db_list);
   };
 
   const university_clicked = (university) => {
