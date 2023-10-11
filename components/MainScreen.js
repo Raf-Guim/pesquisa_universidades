@@ -10,8 +10,18 @@ import { useState } from 'react';
 import { fetch_universities, insert_university } from '../db/BancoDados.js';
 
 import axios from 'axios';
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry.js';
+import TopSection from './TopSection.js';
 
 export const MainScreen = ({ navigation }) => {
+  const [university, update_university] = useState('');
+  const [country, update_country] = useState('');
+
+  const [search_list, update_search_list] = useState([]);
+  const [db_list, update_db_list] = useState([]);
+  const update_db_list_handler = (list) => {
+    update_db_list(list);
+  }
 
   const [exibirModal, setExibirModal] = useState(false);
 
@@ -20,44 +30,7 @@ export const MainScreen = ({ navigation }) => {
     update_modal_text(text);
   }
 
-  const [url_search, update_url_search] = useState('');
-  // const update_url_search_handler = (text) => {
-  //   update_url_search(text);
-  // }
-
-  const [db_list, update_db_list] = useState([]);
-  const update_db_list_handler = (list) => {
-    update_db_list(list);
-  }
-
-  const [search_list, update_search_list] = useState([]);
-  const update_search_list_handler = (list) => {
-    update_search_list(list);
-  }
-  const [university, update_university] = useState('');
-  const update_university_handler = (text) => {
-    update_university(text);
-  }
-
-  const [country, update_country] = useState('');
-  const update_country_handler = (text) => {
-    update_country(text);
-  }
-
-  const getUniversities = async () => {
-    if (country === '') {
-      console.log('ENTREI NO COUNTRY');
-      update_url_search(`http://universities.hipolabs.com/search?name=${university}`);
-    }
-    else if (university === '') {
-      console.log('ENTREI NO UNIVERSITY');
-      update_url_search(`http://universities.hipolabs.com/search?country=${country}`);
-    }
-    else {
-      console.log('ENTREI NO TANTO FAZ');
-      update_url_search(`http://universities.hipolabs.com/search?name=${university}&country=${country}`);
-    }
-
+  const fetch_universities_api = async (url_search) => {
     response = await axios.get(url_search)
       .then(response => {
         console.log(response);
@@ -68,50 +41,56 @@ export const MainScreen = ({ navigation }) => {
         update_modal_text_handler("Erro ao buscar lista de universidades");
         setExibirModal(!exibirModal);
       });
-    update_search_list_handler(response);
-    console.log(search_list);
+      if (response.length === 0) {
+        update_modal_text_handler("Nenhuma universidade encontrada");
+        setExibirModal(!exibirModal);
+      }
+      else {
+        update_search_list(response);
+      }
   };
 
-  // const fetch_data = async () => {
-  //   const response = await axios.get(url_search);
-  // };
 
-  const button_search_clicked  = () => {
+  const button_search_clicked  = (country, university) => {
+    update_country(country);
+    update_university(university);
     console.log("Button search clicked");
     if (country === '' && university === '') {
-      console.log("Country and university not informed");
-      update_search_list_handler([]);
+      update_search_list([]);
       update_modal_text_handler("Favor informar País ou Universidade");
       setExibirModal(!exibirModal);
     }
     else {
-      getUniversities();
+      update_search_list([]);
+      url_search = `http://universities.hipolabs.com/search?name=${university}&country=${country}`;
+      fetch_universities_api(url_search);
     }
   };
 
   const button_favories_clicked = async () => {
     console.log("Button favorites clicked");
-    update_search_list_handler([]);
+    update_search_list([]);
     await fetch_universities()
     .then((res) => {
-      update_db_list_handler(res);
+      update_db_list(res);
     })
     .catch((err) => console.log(err));
 
-    await navigation.navigate('Favoritos', db_list);
+    navigation.navigate('Favoritos', db_list);
   };
 
   const university_clicked = (university) => {
     insert_university(university.name, university.web_pages[0]).then().catch((err) => console.log(err));
+    console.log(fetch_universities());
   };
 
   return (
+    // Consertar para ao iniciar a aplicação, consultar o banco de dados e atualizar a lista de favoritos
+    // Usar lista de favoritos como variavel e nao ficar consultando o banco de dados toda vez que clicar no botao de favoritos
+    // Criar controle da lista dentro do proprio BottomSection para nao transitar o tempo inteiro
     <SafeAreaView style={styles.main}>
       <AlertModal exibirModal = {exibirModal} setExibirModal = {setExibirModal} modal_text = {modal_text} />
-      <View style = {styles.top_section}>
-        <InputsContainer update_country_handler = {update_country_handler} update_university_handler = {update_university_handler} />
-        <ButtonsContainer button_search_clicked = {button_search_clicked} button_favories_clicked = {button_favories_clicked} />
-      </View>
+      <TopSection button_search_clicked = {button_search_clicked} button_favories_clicked = {button_favories_clicked} />
       <View style = {styles.bottom_section}>
         <ListUniversities search_list = {search_list} university_clicked = {university_clicked} />
       </View>

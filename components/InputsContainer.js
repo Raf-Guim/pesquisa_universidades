@@ -1,27 +1,31 @@
 import React from 'react';
-import {View} from 'react-native';
+import { View, TextInput } from 'react-native';
+import { useState } from 'react';
 
 import { styles } from '../src/css/styles.js';
 
-import { InputCountry } from './InputCountry.js';
-import { InputUniversity } from './InputUniversity.js';
-
 export const InputsContainer = (props) => {
 
-  // props.get_university_country('university_got', 'country_got');
-
+  const [country, update_country] = useState('');
   const update_country_handler = (text) => {
-    props.update_country_handler(text);
+    update_country(text);
+  }
+  
+  const [university, update_university] = useState('');
+  const update_university_handler = (text) => {
+    update_university(text);
   }
 
-  const update_university_handler = (text) => {
-    props.update_university_handler(text);
+  if (props.get_country_university_bool) {
+    props.get_country_university_input(country, university);
+    props.change_get_country_university_bool(false);
   }
+
 
   return(
     <View style = {styles.inputs_container}>
-      <InputCountry update_country_handler = {update_country_handler} />
-      <InputUniversity update_university_handler = {update_university_handler} />
+      <TextInput style={styles.input} placeholder="Nome do País" onChangeText={update_country_handler}/>
+      <TextInput style={styles.input} placeholder="Nome da Universidade" onChangeText={update_university_handler}/>
     </View>
   )
 }
