@@ -5,8 +5,9 @@ import { StatusBar } from 'expo-status-bar';
 import MainScreen from './components/MainScreen.js';
 import Favorites from './components/Favorites.js';
 
-import { initialize_db } from './db/BancoDados.js';
+import { initialize_db, fetch_universities } from './db/BancoDados.js';
 import { styles } from './src/css/styles.js';
+import { useEffect, useState } from 'react';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,14 +22,21 @@ const Stack = createNativeStackNavigator();
 //   },
 // }}
 
+
 export default function App() {
-  initialize_db().then(() => console.log("Iniciado banco de dados")).catch((err) => console.log(err));
+
+  useEffect(() => {
+    initialize_db()
+      .then(() => console.log("Iniciando banco de dados"))
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <NavigationContainer>
       <StatusBar style="auto" />
       <Stack.Navigator>
-        <Stack.Screen name="Principal" component={MainScreen} />
-        <Stack.Screen name="Favoritos" component={Favorites} />
+      <Stack.Screen name="Principal" component={MainScreen}/>
+      <Stack.Screen name="Favoritos" component={Favorites}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

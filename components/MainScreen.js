@@ -2,26 +2,20 @@ import {SafeAreaView, View} from 'react-native';
 
 import { styles } from '../src/css/styles.js';
 
-import { ButtonsContainer } from './ButtonsContainer.js';
-import { InputsContainer } from './InputsContainer.js';
 import { ListUniversities } from './ListUniversities.js';
 import { AlertModal } from './AlertModal.js';
 import { useState } from 'react';
 import { fetch_universities, insert_university } from '../db/BancoDados.js';
 
 import axios from 'axios';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry.js';
 import TopSection from './TopSection.js';
 
-export const MainScreen = ({ navigation }) => {
+export const MainScreen = ({ navigation }, props, route) => {
   const [university, update_university] = useState('');
   const [country, update_country] = useState('');
 
   const [search_list, update_search_list] = useState([]);
   const [db_list, update_db_list] = useState([]);
-  const update_db_list_handler = (list) => {
-    update_db_list(list);
-  }
 
   const [exibirModal, setExibirModal] = useState(false);
 
@@ -50,11 +44,25 @@ export const MainScreen = ({ navigation }) => {
       }
   };
 
+  const fetch_universities_db = async () => {
+    response = await fetch_universities()
+        .then((res) => {
+          console.log('res => ' + JSON.stringify(res));
+          return res;
+        })
+        .catch((err) => console.log(err));
+        console.log('response => ' + JSON.stringify(response));
+        update_db_list(response);
+      };
 
   const button_search_clicked  = (country, university) => {
     update_country(country);
     update_university(university);
     console.log("Button search clicked");
+    console.log('route => ' + JSON.stringify(route));
+    console.log('props => ' + JSON.stringify(props));
+    console.log('navigation => ' + JSON.stringify(navigation));
+    console.log(db_list);
     if (country === '' && university === '') {
       update_search_list([]);
       update_modal_text_handler("Favor informar País ou Universidade");
@@ -70,13 +78,10 @@ export const MainScreen = ({ navigation }) => {
   const button_favories_clicked = async () => {
     console.log("Button favorites clicked");
     update_search_list([]);
-    await fetch_universities()
-    .then((res) => {
-      update_db_list(res);
-    })
-    .catch((err) => console.log(err));
-
-    navigation.navigate('Favoritos', db_list);
+    await fetch_universities_db();
+    console.log('db_list =>' + JSON.stringify(db_list));
+    navigation.navigate('Favoritos', {db_list: db_list});
+    console.log('Pos navegar para Favoritos!');
   };
 
   const university_clicked = (university) => {
