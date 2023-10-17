@@ -30,7 +30,6 @@ export const insert_university = (name, website) => {
             tx.executeSql('INSERT INTO university (name, website) VALUES (?, ?)',
             [name, website],
             (_, result) => {
-                console.log(result)
                 resolve(result);
             },
             (_, error) => reject(error));    
@@ -69,7 +68,6 @@ export const remove_university = (id) => {
             tx.executeSql('DELETE FROM university WHERE id = ?',
             [id],
             (_, result) => {
-                console.log(result)
                 resolve(result);
             },
             (_, error) => reject(error));    
